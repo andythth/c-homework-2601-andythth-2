@@ -10,45 +10,86 @@
 int main(void)
 {
 	system("chcp 65001");
-	char market_type; 
-	int buy_price;
-	int quantity;
-	int current_price;
-	int total_invest;
-	int current_value;
-	int profit_loss;
+	
+	int buy_price, quantity, current_price;
+	int total_invest, current_value, profit_loss;
 	float yield_rate;
+	char market_type;
+	int i;
 	
-	printf("=== 떡상 기원 모의 주식 다이어리 ===\n");
+	printf("===V2.0 다중 주식 관리 시스템===\n");
+	printf("총 3개의 보유 종목을 차례대로 입력하시오\n\n");
 	
-	printf("1. 주식 시장을 알파벳 한 글자로 입력하세요 (K/Q/N 등): ");
-	scanf(" %c", &market_type);
+	for (i=1;i<=3; i++)
+	{
+		printf("---[%d번째 종목입력]---\n",i);
+		
+		printf("시장 입력 (K:코스피, Q:코스닥, N:나스닥): ");
+		scanf(" %c", &market_type);
+		
+		printf("매수 단가(원): ");
+		scanf(" %d", &buy_price);
+		
+		printf("보유수량(주): ");
+		scanf(" %d", &quantity);
+		
+		printf("현재가(원): ");
+		scanf(" %d", &current_price);
+		
+		//산술연산
+		total_invest = buy_price*quantity;
+		current_value = current_price*quantity;
+		profit_loss = current_value - total_invest;
+		yield_rate = ((float)profit_loss / total_invest)*100;
+		
+		printf("\n>> 분석 결과\n");
+		
+		switch (market_type)
+		{
+			case 'K':
+			case 'k':
+			{
+				printf("- 시장: 대한민국 KOSPI (안정성 위주)\n");
+				break;
+			}
+			case 'Q':
+			case 'q':
+			{
+				printf("- 시장: 대한민국 KOSDAQ (성장주 위주)\n");
+				break;
+			}
+			case 'N':
+			case 'n':
+			{
+				printf("- 시장: 미국 NASDAQ (글로벌 안정성)\n");
+				break;
+			}
+			default:
+				printf("- 시장: 기타/미등록 시장\n");
+				
+		}
+		
+		if (yield_rate >= 10.0)
+		{
+			printf("- 평가손익 : %d원 (수익중)\n", profit_loss);
+			printf("- 피드백: 수익률 %.2f%%! 익절 타이밍 추천\n", yield_rate);
+		}
+		else if (yield_rate >= 0.0)
+		{
+			printf("- 평가손익 : %d원 (본전)\n", profit_loss);
+			printf("- 피드백: 수익률 %.2f%%. 원금을 지키는중...\n", yield_rate);
+		}
+		else
+		{
+			printf("- 평가손익 : %d원 (손실중)\n", profit_loss);
+			printf("- 피드백: 수익률 %.2f%%. 손절하거나 손실구간 주의\n", yield_rate);
+		}
+		printf("---------------------------------------\n\n");
+		
+	}
 	
-	printf("2. 1주당 매수 단가를입력하세요 (원): ");
-	scanf("%d", &buy_price);
+	printf("모든 종목 분석이 완료되었습니다. 프로그램을 종료합니다.");
 	
-	printf("3. 보유 수량을 입력하세요 (주): ");
-	scanf("%d", &quantity);
-	
-	printf("4. 현재가를 입력하세요 (원): ");
-	scanf("%d", &current_price);
-	
-	
-	total_invest = buy_price*quantity;  //곱셈
-	current_value = current_price*quantity; //곱셈
-	profit_loss = current_value-total_invest; //뺄셈
-	
-	yield_rate = ((float)profit_loss/total_invest)*100; //나눗셈, 곱셈
-	
-	printf("\n==================결과요약===================\n");
-	printf("시장      : %c\n", market_type);
-	printf("매수총액  : %d원\n", total_invest);
-	printf("현재가치  : %d원\n", current_value);
-	printf("수익률    : %.2f%%\n", yield_rate);
-	printf("---------------------------------------------\n");
-	printf(">>총 평가 손익 : %d원\n", profit_loss);
-	printf("=============================================\n");
 	
 	return 0;
-	
 }
